@@ -1,0 +1,8 @@
+prefix=/home/neo_hiwi2/socketcan_elmo_ws/devel
+
+Name: cob_generic_can
+Description: Description of cob_generic_can
+Version: 0.5.7
+Cflags: -I/home/neo_hiwi2/socketcan_elmo_ws/src/cob_generic_can/common/include
+Libs: -L/home/neo_hiwi2/socketcan_elmo_ws/devel/lib -lcob_generic_can_socketdriver
+Requires: roscpp

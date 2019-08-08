@@ -288,6 +288,45 @@ _gtest_SOURCES:FILEPATH=/usr/src/gtest/src/gtest.cc
 catkin_DIR:PATH=/opt/ros/melodic/share/catkin/cmake
 
 //Value Computed by CMake
+cob_canctrl_BINARY_DIR:STATIC=/home/neo_hiwi2/socketcan_elmo_ws/build/cob_canctrl
+
+//Dependencies for target
+cob_canctrl_LIB_DEPENDS:STATIC=
+
+//Value Computed by CMake
+cob_canctrl_SOURCE_DIR:STATIC=/home/neo_hiwi2/socketcan_elmo_ws/src/cob_canctrl
+
+//Value Computed by CMake
+cob_canopen_motor_BINARY_DIR:STATIC=/home/neo_hiwi2/socketcan_elmo_ws/build/cob_canopen_motor
+
+//The directory containing a CMake configuration file for cob_canopen_motor.
+cob_canopen_motor_DIR:PATH=/home/neo_hiwi2/socketcan_elmo_ws/devel/share/cob_canopen_motor/cmake
+
+//Value Computed by CMake
+cob_canopen_motor_SOURCE_DIR:STATIC=/home/neo_hiwi2/socketcan_elmo_ws/src/cob_canopen_motor
+
+//Dependencies for target
+cob_canopen_motor_harmonica_LIB_DEPENDS:STATIC=
+
+//Value Computed by CMake
+cob_generic_can_BINARY_DIR:STATIC=/home/neo_hiwi2/socketcan_elmo_ws/build/cob_generic_can
+
+//The directory containing a CMake configuration file for cob_generic_can.
+cob_generic_can_DIR:PATH=/home/neo_hiwi2/socketcan_elmo_ws/devel/share/cob_generic_can/cmake
+
+//Value Computed by CMake
+cob_generic_can_SOURCE_DIR:STATIC=/home/neo_hiwi2/socketcan_elmo_ws/src/cob_generic_can
+
+//Dependencies for the target
+cob_generic_can_socketdriver_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/usr/lib/x86_64-linux-gnu/libboost_signals.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//The directory containing a CMake configuration file for cpp_common.
+cpp_common_DIR:PATH=/opt/ros/melodic/share/cpp_common/cmake
+
+//The directory containing a CMake configuration file for geometry_msgs.
+geometry_msgs_DIR:PATH=/opt/ros/melodic/share/geometry_msgs/cmake
+
+//Value Computed by CMake
 gmock_BINARY_DIR:STATIC=/home/neo_hiwi2/socketcan_elmo_ws/build/gtest/googlemock
 
 //Dependencies for the target
@@ -335,6 +374,45 @@ gtest_hide_internal_symbols:BOOL=OFF
 
 //Dependencies for the target
 gtest_main_LIB_DEPENDS:STATIC=general;-lpthread;general;gtest;
+
+//Path to a library.
+lib:FILEPATH=/opt/ros/melodic/lib/libxmlrpcpp.so
+
+//The directory containing a CMake configuration file for message_runtime.
+message_runtime_DIR:PATH=/opt/ros/melodic/share/message_runtime/cmake
+
+//Value Computed by CMake
+neo_mpo_700_BINARY_DIR:STATIC=/home/neo_hiwi2/socketcan_elmo_ws/build/neo_mpo_700
+
+//Value Computed by CMake
+neo_mpo_700_SOURCE_DIR:STATIC=/home/neo_hiwi2/socketcan_elmo_ws/src/neo_mpo_700
+
+//The directory containing a CMake configuration file for rosconsole.
+rosconsole_DIR:PATH=/opt/ros/melodic/share/rosconsole/cmake
+
+//The directory containing a CMake configuration file for roscpp.
+roscpp_DIR:PATH=/opt/ros/melodic/share/roscpp/cmake
+
+//The directory containing a CMake configuration file for roscpp_serialization.
+roscpp_serialization_DIR:PATH=/opt/ros/melodic/share/roscpp_serialization/cmake
+
+//The directory containing a CMake configuration file for roscpp_traits.
+roscpp_traits_DIR:PATH=/opt/ros/melodic/share/roscpp_traits/cmake
+
+//The directory containing a CMake configuration file for rosgraph_msgs.
+rosgraph_msgs_DIR:PATH=/opt/ros/melodic/share/rosgraph_msgs/cmake
+
+//The directory containing a CMake configuration file for rostime.
+rostime_DIR:PATH=/opt/ros/melodic/share/rostime/cmake
+
+//The directory containing a CMake configuration file for sensor_msgs.
+sensor_msgs_DIR:PATH=/opt/ros/melodic/share/sensor_msgs/cmake
+
+//The directory containing a CMake configuration file for std_msgs.
+std_msgs_DIR:PATH=/opt/ros/melodic/share/std_msgs/cmake
+
+//The directory containing a CMake configuration file for xmlrpcpp.
+xmlrpcpp_DIR:PATH=/opt/ros/melodic/share/xmlrpcpp/cmake
 
 
 ########################
@@ -446,7 +524,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=5
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=8
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

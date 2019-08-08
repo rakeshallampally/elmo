@@ -10,6 +10,9 @@ project(cob_canctrl)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  cob_canopen_motor
+  cob_generic_can
+  sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -104,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES cob_canctrl
- CATKIN_DEPENDS roscpp std_msgs cob_canopen_motor sensor_msgs
+ CATKIN_DEPENDS roscpp std_msgs cob_canopen_motor sensor_msgs cob_generic_can cob_canopen_motor
  DEPENDS system_lib
 )
 
@@ -121,7 +124,7 @@ include_directories(
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-   src/${PROJECT_NAME}/cob_canctrl.cpp
+   src/cobcanctrl.cpp
  )
 
 ## Add cmake target dependencies of the library
@@ -132,7 +135,7 @@ add_library(${PROJECT_NAME}
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/cob_canctrl_node.cpp)
+add_executable(cobcanctrl src/cobcanctrl.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -145,7 +148,7 @@ add_executable(${PROJECT_NAME}_node src/cob_canctrl_node.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(${PROJECT_NAME}_node
+ target_link_libraries(cobcanctrl
    ${catkin_LIBRARIES}
  )
 
@@ -164,7 +167,7 @@ add_executable(${PROJECT_NAME}_node src/cob_canctrl_node.cpp)
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
+install(TARGETS cob_canctrl cobcanctrl
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
