@@ -1,2 +1,2 @@
-socket_can_elmo
+cob_canctrl:cob_canopen_motor:cob_generic_can:neo_mpo_700
 -DCATKIN_DEVEL_PREFIX=/home/neo_hiwi2/socketcan_elmo_ws/devel -DCMAKE_INSTALL_PREFIX=/home/neo_hiwi2/socketcan_elmo_ws/install -G Unix Makefiles

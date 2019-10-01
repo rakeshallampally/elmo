@@ -1,0 +1,8 @@
+prefix=/home/neo_hiwi2/socketcan_elmo_ws/install
+
+Name: cob_canctrl
+Description: Description of cob_canctrl
+Version: 0.0.0
+Cflags: -I/home/neo_hiwi2/socketcan_elmo_ws/install/include
+Libs: -L/home/neo_hiwi2/socketcan_elmo_ws/install/lib -lcob_canctrl
+Requires: roscpp std_msgs cob_canopen_motor sensor_msgs cob_generic_can cob_canopen_motor

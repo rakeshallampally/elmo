@@ -1,0 +1,8 @@
+prefix=/home/neo_hiwi2/socketcan_elmo_ws/install
+
+Name: cob_canopen_motor
+Description: Description of cob_canopen_motor
+Version: 0.5.7
+Cflags: -I/home/neo_hiwi2/socketcan_elmo_ws/install/include
+Libs: -L/home/neo_hiwi2/socketcan_elmo_ws/install/lib -lcob_canopen_motor_harmonica
+Requires: roscpp cob_generic_can

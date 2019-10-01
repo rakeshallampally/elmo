@@ -1,18 +1,12 @@
 
 #include <ros/ros.h>
-
-// general includes
-#include <math.h>
-#include <unistd.h>
-
-// Headers provided by other cob-packages
-
 #include <cob_canctrl/cobcanctrl.h>
-
+#include <cob_generic_can/cansocketdriver.h>
+#include <cob_generic_can/cansocketreceiver.h>
 
 cobcanctrl::cobcanctrl()
 {
-  ros::NodeHandle n;
+
   if (n.hasParam("NumberOfMotors"))
 	{
 		n.getParam("NumberOfMotors", m_iNumMotors);
@@ -36,7 +30,9 @@ cobcanctrl::cobcanctrl()
 		m_iNumDrives = 0;
 		ROS_WARN("NumberOfWheels not found on Parameter-Server, using default value: 0");
 	}
-  can_ctrl = NULL;
+  m_pCanCtrl = NULL;
+  m_sCanCtrl = NULL;
+
   m_vpMotor.resize(m_iNumMotors);
 
   for(int i=0; i<m_iNumMotors; i++)
@@ -52,10 +48,14 @@ cobcanctrl::cobcanctrl()
 cobcanctrl::~cobcanctrl()
 {
 
-	if (can_ctrl != NULL)
+	if (m_pCanCtrl != NULL)
 	{
-		delete can_ctrl;
+		delete m_pCanCtrl;
 	}
+  if (m_sCanCtrl != NULL)
+  {
+    delete m_sCanCtrl;
+  }
 
 	for(unsigned int i = 0; i < m_vpMotor.size(); i++)
 	{
@@ -71,6 +71,7 @@ cobcanctrl::~cobcanctrl()
 void cobcanctrl::readingparams()
 {
   ros::NodeHandle n;
+  int iTypeCan = 0;
 
   if (n.hasParam("TypeCan/Can"))
 	{
@@ -89,6 +90,7 @@ void cobcanctrl::readingparams()
 	{
 
 		m_pCanCtrl = new cansocketdriver();
+    m_sCanCtrl = new cansocketreceiver();
 		ROS_INFO("Uses cansocket driver");
 	}
 
@@ -102,7 +104,7 @@ void cobcanctrl::readingparams()
 
 
 
-  / Wheel 1
+  //Wheel 1
 	// DriveMotor
 	if(m_iNumDrives >= 1)
 	{
@@ -199,6 +201,7 @@ void cobcanctrl::readingparams()
 				m_CanOpenIDParam.TxPDO1_W1Drive, m_CanOpenIDParam.TxPDO2_W1Drive, m_CanOpenIDParam.RxPDO2_W1Drive,
 				m_CanOpenIDParam.TxSDO_W1Drive, m_CanOpenIDParam.RxSDO_W1Drive);
 			m_vpMotor[0]->setCanItf(m_pCanCtrl);
+      m_vpMotor[0]->setCanItff(m_sCanCtrl);
 
 		}
 
@@ -222,6 +225,7 @@ void cobcanctrl::readingparams()
 				m_CanOpenIDParam.TxPDO1_W1Steer, m_CanOpenIDParam.TxPDO2_W1Steer, m_CanOpenIDParam.RxPDO2_W1Steer,
 				m_CanOpenIDParam.TxSDO_W1Steer, m_CanOpenIDParam.RxSDO_W1Steer);
 			m_vpMotor[1]->setCanItf(m_pCanCtrl);
+      m_vpMotor[1]->setCanItff(m_sCanCtrl);
 
 
 		}
@@ -247,6 +251,7 @@ void cobcanctrl::readingparams()
 				m_CanOpenIDParam.TxPDO1_W2Drive, m_CanOpenIDParam.TxPDO2_W2Drive, m_CanOpenIDParam.RxPDO2_W2Drive,
 				m_CanOpenIDParam.TxSDO_W2Drive, m_CanOpenIDParam.RxSDO_W2Drive);
 			m_vpMotor[2]->setCanItf(m_pCanCtrl);
+      m_vpMotor[2]->setCanItff(m_sCanCtrl);
 
 		}
 	}
@@ -270,6 +275,7 @@ void cobcanctrl::readingparams()
 				m_CanOpenIDParam.TxPDO1_W2Steer, m_CanOpenIDParam.TxPDO2_W2Steer, m_CanOpenIDParam.RxPDO2_W2Steer,
 				m_CanOpenIDParam.TxSDO_W2Steer, m_CanOpenIDParam.RxSDO_W2Steer);
 			m_vpMotor[3]->setCanItf(m_pCanCtrl);
+      m_vpMotor[3]->setCanItff(m_sCanCtrl);
 
 
 		}
@@ -295,6 +301,7 @@ void cobcanctrl::readingparams()
 				m_CanOpenIDParam.TxPDO1_W3Drive, m_CanOpenIDParam.TxPDO2_W3Drive, m_CanOpenIDParam.RxPDO2_W3Drive,
 				m_CanOpenIDParam.TxSDO_W3Drive, m_CanOpenIDParam.RxSDO_W3Drive);
 			m_vpMotor[4]->setCanItf(m_pCanCtrl);
+      m_vpMotor[4]->setCanItff(m_sCanCtrl);
 
 		}
 	}
@@ -318,6 +325,7 @@ void cobcanctrl::readingparams()
 				m_CanOpenIDParam.TxPDO1_W3Steer, m_CanOpenIDParam.TxPDO2_W3Steer, m_CanOpenIDParam.RxPDO2_W3Steer,
 				m_CanOpenIDParam.TxSDO_W3Steer, m_CanOpenIDParam.RxSDO_W3Steer);
 			m_vpMotor[5]->setCanItf(m_pCanCtrl);
+      m_vpMotor[5]->setCanItff(m_sCanCtrl);
 
 
 		}
@@ -343,6 +351,7 @@ void cobcanctrl::readingparams()
 				m_CanOpenIDParam.TxPDO1_W4Drive, m_CanOpenIDParam.TxPDO2_W4Drive, m_CanOpenIDParam.RxPDO2_W4Drive,
 				m_CanOpenIDParam.TxSDO_W4Drive, m_CanOpenIDParam.RxSDO_W4Drive);
 			m_vpMotor[6]->setCanItf(m_pCanCtrl);
+      m_vpMotor[6]->setCanItff(m_sCanCtrl);
 
 		}
 	}
@@ -366,6 +375,7 @@ void cobcanctrl::readingparams()
 				m_CanOpenIDParam.TxPDO1_W4Steer, m_CanOpenIDParam.TxPDO2_W4Steer, m_CanOpenIDParam.RxPDO2_W4Steer,
 				m_CanOpenIDParam.TxSDO_W4Steer, m_CanOpenIDParam.RxSDO_W4Steer);
 			m_vpMotor[7]->setCanItf(m_pCanCtrl);
+      m_vpMotor[7]->setCanItff(m_sCanCtrl);
 
 
 		}
@@ -375,72 +385,46 @@ void cobcanctrl::readingparams()
 
 
 
+}
+
+  void cobcanctrl::sendNetStartCanOpen()
+  {
+    CanMsg msg;
+
+    msg.m_iID  = 0;
+    msg.m_iLen = 2;
+    msg.set(1,0,0,0,0,0,0,0);
+    m_pCanCtrl->transmitMsg(msg);
+
+    usleep(100000);
+  }
 
 
 
 
 
-bool cobcanctrl::intializing()
+
+
+
+void cobcanctrl::intializing()
 {
   readingparams();
-  std::vector<bool> vbRetDriveMotor;
-	std::vector<bool> vbRetSteerMotor;
-	std::vector<CanDriveItf*> vpDriveMotor;
-	std::vector<CanDriveItf*> vpSteerMotor;
-
-  vbRetDriveMotor.assign(m_iNumDrives,0);
-	vbRetSteerMotor.assign(m_iNumDrives,0);
-
-
-  for(int i=0; i<=m_iNumMotors; i+=2){
-		vpDriveMotor.push_back(m_vpMotor[i]);
-  }
-  for(int i=1; i<=m_iNumMotors; i+=2){
-    vpSteerMotor.push_back(m_vpMotor[i]);
-  }
 
   // Start can open network
 	std::cout << "StartCanOpen" << std::endl;
 	sendNetStartCanOpen();
+  std::cout << "m5" << std::endl;
 
-  vbRetDriveMotor[i] = vpDriveMotor[i]->start();
-	vbRetSteerMotor[i] = vpSteerMotor[i]->start());
-
-
-
-
+  for(int i=0; i<m_iNumMotors; i++){
+    std::cout << "m1" << std::endl;
+    m_vpMotor[i]->start();
 
 
-
-
-
+  }
 
 
 }
 
-
-
-void cobcanctrl::sendNetStartCanOpen()
-{
-	CanMsg msg;
-
-	msg.m_iID  = 0;
-	msg.m_iLen = 2;
-	msg.set(1,0,0,0,0,0,0,0);
-	m_pCanCtrl->transmitMsg(msg);
-
-	usleep(100000);
-}
-
-
-
-
-
-
-
-
-
-}
 
 
 
@@ -454,14 +438,16 @@ int main(int argc, char** argv)
 {
 	// initialize ROS, spezify name of node
 	ros::init(argc, argv, "cobcanctrl");
+  ROS_INFO("raddfd");
 
 	cobcanctrl ctrl;
 
 	// specify looprate of control-cycle
  	ros::Rate loop_rate(100); // Hz
 
-	while (ros::ok())
+	while (ctrl.n.ok())
 	{
+    ROS_INFO("rad");
 
 		ctrl.intializing();
 

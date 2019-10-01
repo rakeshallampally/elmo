@@ -1,0 +1,8 @@
+prefix=/home/neo_hiwi2/socketcan_elmo_ws/install
+
+Name: neo_mpo_700
+Description: Description of neo_mpo_700
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/neo_hiwi2/socketcan_elmo_ws/install/lib 
+Requires: 

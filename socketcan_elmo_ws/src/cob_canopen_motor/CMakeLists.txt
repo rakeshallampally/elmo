@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(cob_canopen_motor)
 
-find_package(catkin REQUIRED COMPONENTS roscpp cob_generic_can cob_utilities)
+find_package(catkin REQUIRED COMPONENTS roscpp cob_generic_can)
 
 
 ###################################
 ## catkin specific configuration ##
 ###################################
 catkin_package(
-    CATKIN_DEPENDS roscpp cob_generic_can cob_utilities
+    CATKIN_DEPENDS roscpp cob_generic_can
     INCLUDE_DIRS common/include
     LIBRARIES ${PROJECT_NAME}_harmonica
 )
@@ -20,7 +20,7 @@ catkin_package(
 include_directories(common/include ${Boost_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
 
 # add project libs
-add_library(${PROJECT_NAME}_harmonica common/src/CanDriveHarmonica.cpp common/src/ElmoRecorder.cpp)
+add_library(${PROJECT_NAME}_harmonica common/src/CanDriveHarmonica.cpp )
 
 
 #############
