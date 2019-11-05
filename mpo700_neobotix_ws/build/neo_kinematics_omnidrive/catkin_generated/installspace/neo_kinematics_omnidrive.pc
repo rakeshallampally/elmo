@@ -1,0 +1,8 @@
+prefix=/home/neo_hiwi2/mpo700_neobotix_ws/install
+
+Name: neo_kinematics_omnidrive
+Description: Description of neo_kinematics_omnidrive
+Version: 0.0.0
+Cflags: -I/home/neo_hiwi2/mpo700_neobotix_ws/install/include
+Libs: -L/home/neo_hiwi2/mpo700_neobotix_ws/install/lib -lneo_kinematics_omnidrive
+Requires: roscpp rospy std_msgs

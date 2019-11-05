@@ -1,0 +1,8 @@
+prefix=/home/neo_hiwi2/mpo700_neobotix_ws/install
+
+Name: can_socket_virtual
+Description: Description of can_socket_virtual
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/neo_hiwi2/mpo700_neobotix_ws/install/lib 
+Requires: roscpp std_msgs
