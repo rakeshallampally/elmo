@@ -27,12 +27,12 @@ int SocketCan::initSocket()
 
 void SocketCan::transmitMsg(CanMesg sCMsg)
 {
-  fd_set fds;                                                    //array of bits,one bit for one socket
-  struct timeval timeout = {0,10};                               //timeout interval
-  int iSel;                                                      //variabĺe to store select function
-  FD_ZERO(&fds);                                                 //zero all the bits of array
-  FD_SET(iSocket, &fds);
-  iSel = select(iSocket+1, NULL, &fds, NULL, &timeout);          //select func with read func creates a timeout
+  fd_set writeSet;                                                    //array of bits,one bit for one socket
+  struct timeval timeout = {0,10};                                    //timeout interval
+  int iSel;                                                           //variabĺe to store select function
+  FD_ZERO(&writeSet);                                                 //zero all the bits of array
+  FD_SET(iSocket, &writeSet);
+  iSel = select(iSocket+1, NULL, &writeSet, NULL, &timeout);          //select func with write func creates a timeout
 
   if(iSel>0)
   {
@@ -71,10 +71,6 @@ bool SocketCan::receiveMsg(CanMesg* sCMsg)
 	  iNoBytes = read(iSocket, &frame, sizeof(struct can_frame));
 	  sCMsg->m_iId =frame.can_id;
 	  sCMsg->set(frame.data[0], frame.data[1], frame.data[2], frame.data[3],frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
-		/*ROS_INFO("can_id: %X data length: %d data: ", frame.can_id,frame.can_dlc);
-
-		for (int i = 0; i < frame.can_dlc; i++)
-				ROS_INFO("%02X ", frame.data[i]);*/
 	  bRet=true;
   }
 

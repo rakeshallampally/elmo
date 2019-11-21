@@ -53,12 +53,12 @@ void armHoming();
 
 
 /*
- *function for stopping motion in rads
+ *function for stopping motion in rad/s
  */
 void stopMotion();
 
 /*
- *function for setting velocity in rads
+ *function for setting velocity in rad/s
  */
 void setVelInRadS(double dGearvelrads);
 
@@ -127,7 +127,7 @@ double  Drive_dCurrentToTorque;             // factor to convert motor active cu
 double  Drive_dCurrMax;                     // max current allowed   
 int 	Drive_iHomingDigIn;                 // specifies the digital input for homing signal
 int     Drive_iHomingTimeout;               // steer Homing time out
-int     Drive_iModulo;                       // steer modulo
+int     Drive_iModulo;                      // steer modulo
 
 
 

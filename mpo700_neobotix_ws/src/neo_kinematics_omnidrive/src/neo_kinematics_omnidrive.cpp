@@ -8,8 +8,7 @@
 
 int loadingParams(const ros::NodeHandle &n)
 {
-//-----------------------------steer1---------------------------------------------------------
-  // loading steer1 params
+
 
   if (n.hasParam("Time/Sleeptime"))
   {
@@ -21,6 +20,8 @@ int loadingParams(const ros::NodeHandle &n)
     return 1;
   }
 
+  //-----------------------------steer1---------------------------------------------------------
+  // loading steer1 params
   if (n.hasParam("CanOpenIDs/TxPDO1_W1Steer"))
   {
     n.getParam("CanOpenIDs/TxPDO1_W1Steer", m_MotorSteer1.iTxPDO1);
@@ -487,18 +488,34 @@ int loadingParams(const ros::NodeHandle &n)
 
 
 
-int displayErrors(int iErrorNum)
+int driveErrors(int iErrorNum)
+{
+  if((iErrorNum==m_DriveError.iOverHeating) || (iErrorNum==m_DriveError.iOverVoltage) || (iErrorNum==m_DriveError.iUnderVoltage) || (iErrorNum==m_DriveError.iMotorOff) || 
+     (iErrorNum==m_DriveError.iCurrentLimintOn) || (iErrorNum==m_DriveError.iFeedbackLoss) || (iErrorNum==m_DriveError.iPeakCurrentExced) || (iErrorNum==m_DriveError.iSpeedTrack) ||
+     (iErrorNum==m_DriveError.iPositionTrack) || (iErrorNum==m_DriveError.iSpeedLimit) || (iErrorNum==m_DriveError.iMotorStuck) )
+  {
+    return 1;
+  }
+
+  else if(iErrorNum==m_DriveError.iShortCircuit)
+  {
+    return -1;
+  }
+
+  return 0;
+}
+
+
+void displayErrors(int iErrorNum)
 {
   if(iErrorNum==m_DriveError.iInitPosNotSet)
   {
     ROS_ERROR("Intitial positon is not set");
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iStatusReqFail)
   {
     ROS_ERROR("No answer on status request");
-    return 1;
   }
 
 
@@ -506,86 +523,71 @@ int displayErrors(int iErrorNum)
   {
     ROS_ERROR("Over heating");
     ROS_INFO("The environment is too hot, or lacks heat removal or there may be a large thermal resistance between the drive and its mounting.");
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iShortCircuit)
   {
     ROS_ERROR("Drive error short cirucit");
     ROS_INFO("The motor or its wiring may be defective.");
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iOverVoltage)
   {
     ROS_ERROR("Drive error over voltage");
     ROS_INFO("The power supply voltage is too large, or the servo drive did not succeed in absorbing the kinetic energy while braking a load. A shunt resistor may be needed.");
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iUnderVoltage)
   {
     ROS_ERROR("Drive error under voltage");
     ROS_INFO("The power supply is shut off or it has too high an impedance.");
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iMotorOff)
   {
     ROS_ERROR("Motor is still Off");
-    return -1;
   }
 
   else if(iErrorNum==m_DriveError.iCurrentLimintOn)
   {
     ROS_ERROR("Motor current limit on");
-
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iFeedbackLoss)
   {
     ROS_ERROR("feedback loss");
     ROS_INFO("No match between encoder and Hall location.Available in encoder + Hall feedback systems..");
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iPeakCurrentExced)
   {
     ROS_ERROR("Peak current excced");
     ROS_INFO("Possible reasons are drive malfunction or bad tuning of the current controller.");
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iSpeedTrack)
   {
     ROS_ERROR("Speed track error");
     ROS_INFO("Bad tuning of the speed controller (or)  Too tight a speed error tolerance (or) Inability of motor to accelerate to the required speed due to too low a line voltage or not a powerful enough motor");
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iPositionTrack)
   {
     ROS_ERROR("position track error");
     ROS_INFO("Bad tuning of the position or speed controller (or) Too tight a position error tolerance (or) Abnormal motor load, or reaching a mechanical limit");
-    return 1;
   }
 
   else if(iErrorNum==m_DriveError.iSpeedLimit)
   {
     ROS_ERROR("speed limit exceeded");
     ROS_INFO("speed has exceedded the limits");
-    return 1;
   }
  
   else if(iErrorNum==m_DriveError.iMotorStuck)
   {
     ROS_ERROR("motor stuck");
     ROS_INFO("A stuck motor is a motor that does not respond to the applied current command, due to failure of the motor, the drive system or the motion sensor.");
-    return 1;
   }
-
-  return 0;
 
 }
 
@@ -605,15 +607,16 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "NeoKinOmnidrive");                    //initialize ros node  
   ros::NodeHandle n;                                           //ros node handle
-  int iRet;                                                    //variable that stores the return value of recMessages() function
-  std::vector <int> viRet;
+  std::vector <int> viRet;                                     //vector that stores the return value of recMessages() function
   int iTimeElapsed,iTimeSleep;                                 //variable to store elapsed time
   std::chrono::steady_clock::time_point aStart,aStartTime;     //aStart stores the start time for homing
-  int iNumOfMotors=2;
+  int iNumOfMotors=2;                                          //total no of motors
+  bool bDriveError;                                            //boolean variable that tells presence of drive error
   //creating a vectors to store positoin and velocity of steer and drive motors of DM1
   std::vector<double> vdPosGearRad,vdVelGearRadS;
   vdPosGearRad.resize(2,0);
   vdVelGearRadS.resize(2,0);
+  
 
   //loading all the required params from yaml file
   if(!(loadingParams(n) == 0))
@@ -659,34 +662,51 @@ int main(int argc, char** argv)
    ros::Rate loop_rate(100);
    while (ros::ok())
    {  
-      //receiving the messages and evaluating it
+      //receiving the messages and  stores it in vector
       viRet= DM1.recMessages(); 
       for (int i = 0; i < viRet.size(); i++) 
       {
-        if(!(displayErrors(viRet[i])==0))
+        //checking if any error present in the received vector by passing vector to the driveErrors function
+        if((driveErrors(viRet[i])==1))
         {
-          std::cout<<"store"<<m_iStoreState<<std::endl;
+          //displayErrors function displays the error obtained
+          displayErrors(viRet[i]);
+          //storing our current state of drive in variable m_iStoreState
           m_iStoreState=m_iDriveState;
           //in case of errors present changing the state of drive to ST_DRIVE_ERROR
           ROS_INFO("Rectify the above error");
+          //chaning it to the state ST_DRIVE_ERROR because of error presence
           m_iDriveState=ST_DRIVE_ERROR;
         }
-
-        /*if((displayErrors(viRet[i])==-1))
+        
+        //checking if any error obtained in vector is critical
+        if((driveErrors(viRet[i])==-1))
         {
+          displayErrors(viRet[i]);
+          //in case of critical errors it exits the program
           return -1;
-        }*/
-      }
+        }
       
+      }
+      //if the dirve state is  ST_DRIVE_ERROR
       if(m_iDriveState==ST_DRIVE_ERROR)
       {
+        bDriveError=false;
         for (int i = 0; i < viRet.size(); i++) 
         {
-          if((displayErrors(viRet[i])==0))
+          //checking if any errors present in received vector by passing it through driveErrors function
+          if((driveErrors(viRet[i])==1))
           {
-            std::cout<<"store"<<m_iStoreState<<std::endl;
-            m_iDriveState=m_iStoreState;
+            //in case if any error present changing the boolean value of bDriveError as true
+            bDriveError=true;
           }
+
+        }
+
+        if(bDriveError!=true)
+        {
+          //if no error present then going back to our previous state by retriving it from m_iStoreState variable
+          m_iDriveState=m_iStoreState;
         }
       }
 
@@ -703,15 +723,15 @@ int main(int argc, char** argv)
       {
         //state drive not initialized
         ROS_ERROR("Failed to initialize drives, check hardware and CAN bus connection");
-         m_iDriveState=ST_NOT_HOMED;
+        m_iDriveState=ST_NOT_HOMED;
       }
 
 
       else if(bService_called==true)
       {
-        DM1.stopMotion();   //to stop the robot
-        m_iDriveState=ST_SERVICE_CALLED;
-        bService_called=false; 
+        DM1.stopMotion();                      //stops the robot motion to perform homing
+        m_iDriveState=ST_SERVICE_CALLED;       //changing the state as ST_SERVICE_CALLED   
+        bService_called=false;                 //making the bService_called variable as false
       }
 
 
@@ -829,10 +849,6 @@ int main(int argc, char** argv)
 
       }
 
-      //ros::AsyncSpinner s(1);  // Use 4 threads
-      //ROS_INFO_STREAM("Main loop in thread:" << boost::this_thread::get_id());
-      //s.start();
-      //ROS_INFO("came4" );
       loop_rate.sleep();   
       ros::spinOnce();
 

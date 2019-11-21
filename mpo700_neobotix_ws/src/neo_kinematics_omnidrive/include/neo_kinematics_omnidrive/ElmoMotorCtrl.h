@@ -106,7 +106,7 @@ void setVelInRadS(double dGearvelrads);
 
 
 /*
- *function for stopping motion in rads
+ *function for stopping motion 
  */
 void stopMotion();
 

@@ -57,9 +57,7 @@ public:
 
 private:
   int iSocket;                            //variable to store Socket open
-  int iNoBytes;                             //variable that stores no of bytes of data
-
-
+  int iNoBytes;                           //variable that stores no of bytes of data
   struct sockaddr_can addr;               //object for the struct sockaddr_can
   struct can_frame frame;                 //object for the struct can_frame
   struct ifreq ifr;                       //object for the struct ifreq

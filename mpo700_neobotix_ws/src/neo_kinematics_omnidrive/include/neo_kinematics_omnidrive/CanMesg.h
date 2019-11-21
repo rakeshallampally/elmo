@@ -32,12 +32,12 @@ public:
   {
     m_Dat[0]=Data0;
     m_Dat[1] = Data1;
-	m_Dat[2] = Data2;
-	m_Dat[3] = Data3;
-	m_Dat[4] = Data4;
-	m_Dat[5] = Data5;
-	m_Dat[6] = Data6;
-	m_Dat[7] = Data7; 
+	  m_Dat[2] = Data2;
+	  m_Dat[3] = Data3;
+	  m_Dat[4] = Data4;
+	  m_Dat[5] = Data5;
+	  m_Dat[6] = Data6;
+	  m_Dat[7] = Data7; 
   }
 
  /*

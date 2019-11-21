@@ -7,7 +7,7 @@ class DriveParameters
 public:
 
 /*
- *get max accln
+ *get maximum acceleration
  */
 double getMaxAccln()
 {
@@ -16,7 +16,7 @@ double getMaxAccln()
 
 
 /*
- *get max decln
+ *get maximum deceleration
  */
 double getMaxDecln()
 {
@@ -62,7 +62,7 @@ int getmotion_direction()
 
 
 /*
- *convert vel gear rads to vel motor incr period
+ *convert velocity gear rad/s to velocity motor increments period
  */
 int convertVelGearRadSToVelMotIncrPeriod(double dGearvelrads)
 {
@@ -71,7 +71,7 @@ int convertVelGearRadSToVelMotIncrPeriod(double dGearvelrads)
 
 
 /*
- *converting enoder increments in to gear position in radians
+ *convert enoder increments in to gear position in radians
  */
 double convertPosMotIncrToPosGearRad(int iPositionCnt)
 {
@@ -80,7 +80,7 @@ double convertPosMotIncrToPosGearRad(int iPositionCnt)
 
 
 /*
- *conversion of encoder increments to gear vel in rad/s
+ *convert encoder increments to gear velocity in rad/s
  */
 double convertVelMotIncrPeriodToVelGearRadS(int iVelMotIncrPeriod)
 {
@@ -88,7 +88,7 @@ double convertVelMotIncrPeriodToVelGearRadS(int iVelMotIncrPeriod)
 }
 
 /*
- *get ident of drives
+ *get identity of drives
  */
 
 int getIdentOfDrive()
@@ -114,7 +114,7 @@ int getEncoderOffset()
   return m_iEncOffsetIncrement;
 }
 
-//getting digital input for Homing
+//get digital input for Homing
 int getHomDigIn()
 {
   return m_iHomDigIn;
@@ -130,7 +130,7 @@ int getHomTimeOut()
 
 
 /*
- *getting modulo
+ *get modulo
  */
 int getModulo()
 {
@@ -139,7 +139,7 @@ int getModulo()
 
 
 /*
- *setting all the params
+ *set all the params
  */
 
 

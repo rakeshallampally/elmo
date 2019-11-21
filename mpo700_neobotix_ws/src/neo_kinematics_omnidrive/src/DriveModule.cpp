@@ -131,8 +131,8 @@ int DriveModule::init(
       return iSteerMotorOn;
     }  
   }
-Drive->turnOffMotor();
-Steer->turnOffMotor();
+  Drive->turnOffMotor();
+  Steer->turnOffMotor();
 
   return 0;
 }
@@ -229,6 +229,7 @@ std::vector <int> DriveModule::recMessages()
   std::vector <int> viReturn;
   //evlauating the recevied messges
   viReturn= Drive->evaluatingMessageReceived();
+
   viReturn=Steer->evaluatingMessageReceived();
 
   return viReturn;
